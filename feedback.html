@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | Z....'s Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+             justify-content: center;
+            gap: 5px;
+            margin-bottom: 1rem;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 1.8rem;
+            color: #555;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffcc00;
+        }
+        .star-rating input:checked ~ label {
+            color: #ffcc00;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+        .review-stars {
+            color: #ffcc00;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        .feedback-card {
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 4px solid #0f0;
+            padding: 1.2rem;
+            max-width: 350px;
+            width: 100%;
+            position: relative;
+            margin: 0 auto;
+            transition: 0.2s;
+        }
+        .feedback-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0,255,0,0.3);
+        }
+        .feedback-card .review-stars {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+        }
+        .feedback-card p {
+            margin-top: 20px;
+        }
+        .feedback-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-bg">
+        <img src="https://cdn.discordapp.com/attachments/1421566082401173565/1511518269843181710/image-34.webp?ex=6a26ad56&is=6a255bd6&hm=232e738cee69825d2d2faf527bc93bd8bb8f0f827d548942d3a9f6e9e73ac40f&" alt="icon1">
+        <img src="https://cdn.discordapp.com/attachments/1421566082401173565/1467656853440696472/image.png?ex=6a26a1b5&is=6a255035&hm=6e28c41eaa9fc849f30c9590c4a167a460e541b52992654f90e85136d08a859f&" alt="icon2">
+        <img src="https://cdn.discordapp.com/attachments/1421566082401173565/1458893567266128156/image.png?ex=6a270d03&is=6a25bb83&hm=cfb97cff03db2b48d3a0734f732948a0adf9bcf5700d2f59eb37a1b0567b606e&" alt="icon3">
+        <img src="https://cdn.discordapp.com/attachments/1501757553464311869/1513286101484175401/image.png?ex=6a272d02&is=6a25db82&hm=41f11fb2fdb4f77ba2f087bb468d855b9452fac4a3e439f790edfe24081c65a5&" alt="icon4">
+        <img src="https://cdn.discordapp.com/attachments/1421565930437218475/1421566044677603370/image.png?ex=6a270b8c&is=6a25ba0c&hm=c8ee2ab0cdfa22ceed3d34ebfcc24307c2d5f95a58ee1e3aecaef450c44b0b14&" alt="icon5">
+        <img src="https://cdn.discordapp.com/attachments/1421565483567677441/1480016392538427584/image.png?ex=6a26c56d&is=6a2573ed&hm=ac3b81ede48dc427d309912c2a9a2db8f9b60fd6004f1103c1604d33cef2024c&" alt="icon6">
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">[ Z....::SCRIPT ]</div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-link" id="nav-home">HOME</a></li>
+            <li><a href="work.html" class="nav-link" id="nav-work">WORK</a></li>
+            <li><a href="feedback.html" class="nav-link" id="nav-feedback">FEEDBACK</a></li>
+            <li><a href="contact.html" class="nav-link" id="nav-contact">CONTACT</a></li>
+        </ul>
+        <div class="burger">☰</div>
+    </nav>
+
+    <div class="alert-banner">
+        <div class="alert-scroll">
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+            <span>⚠️ HIRE ME NOW! BEFORE IT'S TOO LATE! ⚠️</span>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <h1 class="glitch-text">// FEEDBACK_LOOP</h1>
+
+        <div class="feedback-form-container">
+            <h2 class="glitch-text">[ SEND_FEEDBACK ]</h2>
+            <form id="feedbackForm">
+                <input type="text" id="feedbackName" placeholder="Your name / handle" maxlength="30" required>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                </div>
+                <textarea id="feedbackMessage" placeholder="Your feedback (max 500 chars)" maxlength="500" rows="4" required></textarea>
+                <button type="submit" class="cta-button">SEND FEEDBACK</button>
+            </form>
+        </div>
+
+        <div id="feedback-list" class="feedback-grid"></div>
+    </div>
+
+    <footer>
+        <p>© 2026 Z.... | Z.... Portfolio</p>
+    </footer>
+
+    <script>
+        (function preventDevTools() {
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12' ||
+                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                    (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            setInterval(function() {
+                if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:20%;">🔒 Developer Tools Detected. Access Denied.</h1>';
+                }
+            }, 1000);
+        })();
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, onChildAdded, query, limitToLast, orderByChild } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbVO0SGXKhtKQV6uPkLI_S1Nv3ythRf5U",
+            authDomain: "roblox-portfolio-feedback.firebaseapp.com",
+            databaseURL: "https://roblox-portfolio-feedback-default-rtdb.firebaseio.com",
+            projectId: "roblox-portfolio-feedback",
+            storageBucket: "roblox-portfolio-feedback.firebasestorage.app",
+            messagingSenderId: "669432428989",
+            appId: "1:669432428989:web:422f97ba1db06c4ed7bad4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const feedbackRef = ref(db, 'feedback');
+        const feedbackListDiv = document.getElementById('feedback-list');
+        const recentFeedbackQuery = query(feedbackRef, orderByChild('timestamp'), limitToLast(20));
+
+        function displayFeedback(name, message, rating, timestamp) {
+            const card = document.createElement('div');
+            card.className = 'feedback-card';
+            const timeStr = timestamp ? new Date(timestamp).toLocaleString() : 'just now';
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                starsHtml += (i <= rating) ? '★' : '☆';
+            }
+            card.innerHTML = `
+                <div class="review-stars">${starsHtml}</div>
+                <p>“${escapeHtml(message)}”</p>
+                <h4>— ${escapeHtml(name)}</h4>
+                <small>${timeStr}</small>
+            `;
+            feedbackListDiv.prepend(card);
+        }
+
+        onChildAdded(recentFeedbackQuery, (snapshot) => {
+            const fb = snapshot.val();
+            displayFeedback(fb.name, fb.message, fb.rating, fb.timestamp);
+        });
+
+        const form = document.getElementById('feedbackForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('feedbackName').value.trim();
+            const message = document.getElementById('feedbackMessage').value.trim();
+            const ratingElem = document.querySelector('input[name="rating"]:checked');
+            if (!name || !message || !ratingElem) {
+                alert("Please fill in your name, message, and select a star rating (1-5).");
+                return;
+            }
+            const rating = parseInt(ratingElem.value);
+
+            const newFeedback = { name, message, rating, timestamp: Date.now() };
+            try {
+                await push(feedbackRef, newFeedback);
+                form.reset();
+                document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+                const btn = form.querySelector('button');
+                const originalText = btn.innerText;
+                btn.innerText = "SENT!";
+                setTimeout(() => btn.innerText = originalText, 1500);
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error sending feedback.");
+            }
+        });
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+    </script>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.getElementById('nav-feedback')?.classList.add('active');
+    </script>
+</body>
+</html>
