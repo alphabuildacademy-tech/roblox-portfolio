@@ -11,7 +11,7 @@
         .star-rating {
             display: flex;
             flex-direction: row-reverse;
-             justify-content: center;
+            justify-content: center;
             gap: 5px;
             margin-bottom: 1rem;
         }
@@ -131,16 +131,13 @@
     </div>
 
     <footer>
-        <p>© 2026 Z.... | Z.... Portfolio</p>
+        <p>© 2026 Z.... | Z....'s Portfolio</p>
     </footer>
 
     <script>
-        (function preventDevTools() {
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                return false;
-            });
-            document.addEventListener('keydown', function(e) {
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
                 if (e.key === 'F12' ||
                     (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
                     (e.ctrlKey && e.key === 'U')) {
@@ -148,9 +145,21 @@
                     return false;
                 }
             });
-            setInterval(function() {
-                if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
-                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:20%;">🔒 Developer Tools Detected. Access Denied.</h1>';
+            let devtoolsOpen = false;
+            const element = new Image();
+            Object.defineProperty(element, 'id', {
+                get: function() {
+                    devtoolsOpen = true;
+                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:20%;">🔒 Developer Tools Detected. Content Hidden.</h1>';
+                }
+            });
+            console.log(element);
+            setInterval(() => {
+                const before = new Date();
+                debugger;
+                const after = new Date();
+                if (after - before > 100) {
+                    document.body.innerHTML = '<h1 style="color:red;text-align:center;margin-top:20%;">🔒 Developer Tools Detected. Content Hidden.</h1>';
                 }
             }, 1000);
         })();
