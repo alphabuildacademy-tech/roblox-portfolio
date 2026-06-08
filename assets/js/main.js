@@ -71,13 +71,15 @@ function escapeHtml(str) {
     });
 }
 
-let firebaseApp = null;
-let db = null;
+let firebaseDb = null;
+let firebaseLikesRef = null;
+let firebaseCountersRef = null;
+let firebaseInitialized = false;
 
-async function getFirebase() {
-    if (firebaseApp) return { db, likesRef: ref(db, 'likes') };
+async function initFirebase() {
+    if (firebaseInitialized) return;
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
-    const { getDatabase, ref, get, update, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+    const { getDatabase, ref, get, update, increment, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
     const firebaseConfig = {
         apiKey: "AIzaSyDbVO0SGXKhtKQV6uPkLI_S1Nv3ythRf5U",
         authDomain: "roblox-portfolio-feedback.firebaseapp.com",
@@ -87,22 +89,30 @@ async function getFirebase() {
         messagingSenderId: "669432428989",
         appId: "1:669432428989:web:422f97ba1db06c4ed7bad4"
     };
-    firebaseApp = initializeApp(firebaseConfig);
-    db = getDatabase(firebaseApp);
-    return { db, likesRef: ref(db, 'likes') };
+    const app = initializeApp(firebaseConfig);
+    firebaseDb = getDatabase(app);
+    firebaseLikesRef = ref(firebaseDb, 'likes');
+    firebaseCountersRef = ref(firebaseDb, 'counters');
+    firebaseInitialized = true;
+    window._firebase = { getDatabase, ref, get, update, increment, onValue, db: firebaseDb, likesRef: firebaseLikesRef, countersRef: firebaseCountersRef };
+}
+
+async function getLikeDislikeData(projectId) {
+    await initFirebase();
+    const { get, ref } = window._firebase;
+    const projectRef = ref(firebaseDb, `likes/${projectId}`);
+    const snapshot = await get(projectRef);
+    return snapshot.val() || { likes: 0, dislikes: 0 };
 }
 
 async function updateLikeDislike(projectId, type) {
-    const { likesRef } = await getFirebase();
-    const projectLikesRef = ref(db, `likes/${projectId}`);
-    const snapshot = await get(projectLikesRef);
-    let data = snapshot.val() || { likes: 0, dislikes: 0 };
-    if (type === 'like') {
-        data.likes = (data.likes || 0) + 1;
-    } else if (type === 'dislike') {
-        data.dislikes = (data.dislikes || 0) + 1;
-    }
-    await update(projectLikesRef, data);
+    await initFirebase();
+    const { update, increment, ref } = window._firebase;
+    const projectRef = ref(firebaseDb, `likes/${projectId}`);
+    const updateObj = {};
+    if (type === 'like') updateObj.likes = increment(1);
+    else updateObj.dislikes = increment(1);
+    await update(projectRef, updateObj);
 }
 
 function createLikeDislikeElement(projectId, initialLikes, initialDislikes) {
@@ -132,9 +142,10 @@ function createLikeDislikeElement(projectId, initialLikes, initialDislikes) {
     }
 
     (async () => {
-        const { likesRef } = await getFirebase();
-        const projectLikesRef = ref(db, `likes/${projectId}`);
-        onValue(projectLikesRef, (snapshot) => {
+        await initFirebase();
+        const { onValue, ref } = window._firebase;
+        const projectRef = ref(firebaseDb, `likes/${projectId}`);
+        onValue(projectRef, (snapshot) => {
             const data = snapshot.val() || { likes: 0, dislikes: 0 };
             const likes = data.likes || 0;
             const dislikes = data.dislikes || 0;
@@ -266,61 +277,43 @@ let statsInitialized = false;
 async function initStats() {
     if (statsInitialized) return;
     statsInitialized = true;
+    await initFirebase();
+    const { get, update, increment, onValue, ref } = window._firebase;
+    const countersRef = firebaseCountersRef;
     
-    try {
-        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
-        const { getDatabase, ref, get, update, increment, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyDbVO0SGXKhtKQV6uPkLI_S1Nv3ythRf5U",
-            authDomain: "roblox-portfolio-feedback.firebaseapp.com",
-            databaseURL: "https://roblox-portfolio-feedback-default-rtdb.firebaseio.com",
-            projectId: "roblox-portfolio-feedback",
-            storageBucket: "roblox-portfolio-feedback.firebasestorage.app",
-            messagingSenderId: "669432428989",
-            appId: "1:669432428989:web:422f97ba1db06c4ed7bad4"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const countersRef = ref(db, 'counters');
-        
-        const snapshot = await get(countersRef);
-        if (!snapshot.exists()) {
-            try {
-                await update(countersRef, { pageViews: 0, feedbackCount: 0, contactCount: 0 });
-            } catch (err) {
-                console.warn("Could not initialize counters", err);
+    const snapshot = await get(countersRef);
+    if (!snapshot.exists()) {
+        try {
+            await update(countersRef, { pageViews: 0, feedbackCount: 0, contactCount: 0 });
+        } catch (err) {
+            console.warn("Could not initialize counters", err);
+        }
+    }
+    
+    const hasVisited = sessionStorage.getItem('hasVisited');
+    if (!hasVisited) {
+        try {
+            await update(countersRef, { pageViews: increment(1) });
+            sessionStorage.setItem('hasVisited', 'true');
+        } catch (err) {
+            console.warn("Could not increment page view", err);
+        }
+    }
+    
+    if (window.location.pathname.includes('stats.html')) {
+        onValue(countersRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const pageViewsElem = document.getElementById('pageViews');
+                const feedbackCountElem = document.getElementById('feedbackCount');
+                const contactCountElem = document.getElementById('contactCount');
+                if (pageViewsElem) pageViewsElem.innerText = data.pageViews || 0;
+                if (feedbackCountElem) feedbackCountElem.innerText = data.feedbackCount || 0;
+                if (contactCountElem) contactCountElem.innerText = data.contactCount || 0;
             }
-        }
-        
-        const hasVisited = sessionStorage.getItem('hasVisited');
-        if (!hasVisited) {
-            try {
-                await update(countersRef, { pageViews: increment(1) });
-                sessionStorage.setItem('hasVisited', 'true');
-            } catch (err) {
-                console.warn("Could not increment page view", err);
-            }
-        }
-        
-        if (window.location.pathname.includes('stats.html')) {
-            onValue(countersRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    const pageViewsElem = document.getElementById('pageViews');
-                    const feedbackCountElem = document.getElementById('feedbackCount');
-                    const contactCountElem = document.getElementById('contactCount');
-                    if (pageViewsElem) pageViewsElem.innerText = data.pageViews || 0;
-                    if (feedbackCountElem) feedbackCountElem.innerText = data.feedbackCount || 0;
-                    if (contactCountElem) contactCountElem.innerText = data.contactCount || 0;
-                }
-            }, (error) => {
-                console.warn("Error listening to counters", error);
-            });
-        }
-    } catch (err) {
-        console.error("Stats initialization failed", err);
+        }, (error) => {
+            console.warn("Error listening to counters", error);
+        });
     }
 }
 
