@@ -504,6 +504,90 @@ body > *:not(.floating-bg) {
     z-index: 2;
 }
 
+/* Like / Dislike Buttons */
+.like-dislike {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.like-btn, .dislike-btn {
+    background: transparent;
+    border: 1px solid #0f0;
+    color: #0f0;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 0.9rem;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.like-btn:hover, .dislike-btn:hover {
+    background: #0f0;
+    color: black;
+}
+
+.like-count, .dislike-count {
+    font-weight: bold;
+}
+
+.percentage {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.stats-section {
+    margin-top: 4rem;
+    padding: 2rem;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #0f0;
+    width: 100%;
+    text-align: center;
+}
+
+.stats-section h2 {
+    margin-bottom: 2rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+}
+
+.stat-card {
+    background: rgba(0,0,0,0.7);
+    border: 1px solid #0f0;
+    padding: 1.5rem;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0,255,0,0.3);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0f0;
+    font-family: monospace;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
 @media (max-width: 800px) {
     .burger {
         display: block;
@@ -558,48 +642,6 @@ body > *:not(.floating-bg) {
     .projects-grid {
         grid-template-columns: 1fr;
     }
-}
-
-.stats-section {
-    margin-top: 4rem;
-    padding: 2rem;
-    background: rgba(0,0,0,0.6);
-    border: 1px solid #0f0;
-    width: 100%;
-    text-align: center;
-}
-.stats-section h2 {
-    margin-bottom: 2rem;
-}
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
-    justify-items: center;
-}
-.stat-card {
-    background: rgba(0,0,0,0.7);
-    border: 1px solid #0f0;
-    padding: 1.5rem;
-    width: 100%;
-    transition: 0.2s;
-}
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 15px rgba(0,255,0,0.3);
-}
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #0f0;
-    font-family: monospace;
-    margin-bottom: 0.5rem;
-}
-.stat-label {
-    font-size: 0.9rem;
-    color: #ccc;
-}
-@media (max-width: 600px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
