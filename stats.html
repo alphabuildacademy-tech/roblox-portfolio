@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work | Z....'s Portfolio</title>
+    <title>Statistics | Z....'s Portfolio</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="shortcut icon" href="assets/favicon.ico">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -48,34 +48,45 @@
     </div>
 
     <div class="page-container">
-        <h1 class="glitch-text">// MY_WORK</h1>
+        <h1 class="glitch-text">// STATISTICS</h1>
         
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="scripting">SCRIPTING</button>
-            <button class="tab-btn" data-tab="ui">UI DESIGN</button>
-            <button class="tab-btn" data-tab="modeling">MODELING</button>
-        </div>
-
-        <div id="scripting" class="tab-content active">
-            <div id="scripting-projects" class="projects-grid"></div>
-        </div>
-        
-        <div id="ui" class="tab-content">
-            <div id="ui-projects" class="projects-grid"></div>
-        </div>
-        
-        <div id="modeling" class="tab-content">
-            <div id="modeling-projects" class="projects-grid"></div>
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="pageViews">0</div>
+                    <div class="stat-label">Website Visits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="feedbackCount">0</div>
+                    <div class="stat-label">Feedbacks Received</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="contactCount">0</div>
+                    <div class="stat-label">Contact Messages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100K+</div>
+                    <div class="stat-label">Game Visits Contributed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Scripts & Systems</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>© 2026 Z.... | Z.... Portfolio</p>
+        <p>© 2026 Z.... | Z....'s Portfolio</p>
     </footer>
 
     <script src="assets/js/main.js"></script>
     <script>
-        document.getElementById('nav-work')?.classList.add('active');
+        document.getElementById('nav-stats')?.classList.add('active');
     </script>
 </body>
 </html>

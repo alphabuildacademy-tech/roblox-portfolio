@@ -235,6 +235,55 @@ function escapeHtml(str) {
     });
 }
 
+let statsInitialized = false;
+
+async function initStats() {
+    if (statsInitialized) return;
+    statsInitialized = true;
+    
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+    const { getDatabase, ref, get, update, increment, onValue } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+    
+    const firebaseConfig = {
+        apiKey: "AIzaSyDbVO0SGXKhtKQV6uPkLI_S1Nv3ythRf5U",
+        authDomain: "roblox-portfolio-feedback.firebaseapp.com",
+        databaseURL: "https://roblox-portfolio-feedback-default-rtdb.firebaseio.com",
+        projectId: "roblox-portfolio-feedback",
+        storageBucket: "roblox-portfolio-feedback.firebasestorage.app",
+        messagingSenderId: "669432428989",
+        appId: "1:669432428989:web:422f97ba1db06c4ed7bad4"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const countersRef = ref(db, 'counters');
+    
+    const snapshot = await get(countersRef);
+    if (!snapshot.exists()) {
+        await update(countersRef, { pageViews: 0, feedbackCount: 0, contactCount: 0 });
+    }
+    
+    const hasVisited = sessionStorage.getItem('hasVisited');
+    if (!hasVisited) {
+        await update(countersRef, { pageViews: increment(1) });
+        sessionStorage.setItem('hasVisited', 'true');
+    }
+    
+    if (window.location.pathname.includes('stats.html')) {
+        onValue(countersRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const pageViewsElem = document.getElementById('pageViews');
+                const feedbackCountElem = document.getElementById('feedbackCount');
+                const contactCountElem = document.getElementById('contactCount');
+                if (pageViewsElem) pageViewsElem.innerText = data.pageViews || 0;
+                if (feedbackCountElem) feedbackCountElem.innerText = data.feedbackCount || 0;
+                if (contactCountElem) contactCountElem.innerText = data.contactCount || 0;
+            }
+        });
+    }
+}
+
 (function initMusicPlayer() {
     const savedMuted = sessionStorage.getItem('musicMuted') === 'true';
     const savedTime = parseFloat(sessionStorage.getItem('musicTime')) || 0;
@@ -305,4 +354,5 @@ document.addEventListener('DOMContentLoaded', () => {
     loadScriptingProjects();
     loadUIProjects();
     loadModelingProjects();
+    initStats();
 });

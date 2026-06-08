@@ -87,6 +87,7 @@
             <li><a href="work.html" class="nav-link" id="nav-work">WORK</a></li>
             <li><a href="feedback.html" class="nav-link" id="nav-feedback">FEEDBACK</a></li>
             <li><a href="contact.html" class="nav-link" id="nav-contact">CONTACT</a></li>
+            <li><a href="stats.html" class="nav-link" id="nav-stats">STATS</a></li>
         </ul>
         <div class="burger">☰</div>
     </nav>
@@ -167,7 +168,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onChildAdded, query, limitToLast, orderByChild } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, push, onChildAdded, query, limitToLast, orderByChild, update, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDbVO0SGXKhtKQV6uPkLI_S1Nv3ythRf5U",
@@ -182,6 +183,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const feedbackRef = ref(db, 'feedback');
+        const countersRef = ref(db, 'counters');
         const feedbackListDiv = document.getElementById('feedback-list');
         const recentFeedbackQuery = query(feedbackRef, orderByChild('timestamp'), limitToLast(20));
 
@@ -222,6 +224,7 @@
             const newFeedback = { name, message, rating, timestamp: Date.now() };
             try {
                 await push(feedbackRef, newFeedback);
+                await update(countersRef, { feedbackCount: increment(1) });
                 form.reset();
                 document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
                 const btn = form.querySelector('button');

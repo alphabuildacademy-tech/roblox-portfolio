@@ -25,6 +25,7 @@
             <li><a href="work.html" class="nav-link" id="nav-work">WORK</a></li>
             <li><a href="feedback.html" class="nav-link" id="nav-feedback">FEEDBACK</a></li>
             <li><a href="contact.html" class="nav-link" id="nav-contact">CONTACT</a></li>
+            <li><a href="stats.html" class="nav-link" id="nav-stats">STATS</a></li>
         </ul>
         <div class="burger">☰</div>
     </nav>
@@ -72,7 +73,24 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, update, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbVO0SGXKhtKQV6uPkLI_S1Nv3ythRf5U",
+            authDomain: "roblox-portfolio-feedback.firebaseapp.com",
+            databaseURL: "https://roblox-portfolio-feedback-default-rtdb.firebaseio.com",
+            projectId: "roblox-portfolio-feedback",
+            storageBucket: "roblox-portfolio-feedback.firebasestorage.app",
+            messagingSenderId: "669432428989",
+            appId: "1:669432428989:web:422f97ba1db06c4ed7bad4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const countersRef = ref(db, 'counters');
+
         document.getElementById('nav-contact')?.classList.add('active');
 
         const EMAILJS_PUBLIC_KEY = "1kpTtxab5XarwJu-Z";
@@ -100,6 +118,7 @@
 
             try {
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+                await update(countersRef, { contactCount: increment(1) });
                 statusDiv.innerHTML = "✅ Message sent successfully! I'll reply soon.";
                 statusDiv.style.color = "#0f0";
                 form.reset();
